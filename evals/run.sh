@@ -33,6 +33,8 @@ scaffold() {
         case $fw in
             laravel)
                 composer create-project -n --quiet laravel/laravel "$dir"
+                # Laravel 13 skeletons ship CLAUDE.md/AGENTS.md telling agents to install Laravel Boost; a run that follows it adds ~75 files and skews the scores.
+                rm -f "$dir/CLAUDE.md" "$dir/AGENTS.md"
                 echo "require __DIR__.'/eval.php';" >> "$dir/routes/web.php" ;;
             symfony)
                 composer create-project -n --quiet symfony/skeleton "$dir"
