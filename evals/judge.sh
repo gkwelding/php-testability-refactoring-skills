@@ -60,7 +60,7 @@ EOF
     } > "$name.judge-prompt.txt"
 
     echo "== judging $name (A = $a)"
-    claude -p --tools "" --output-format json --json-schema "$schema" --max-budget-usd "$budget" \
+    claude -p --tools "" --setting-sources project --output-format json --json-schema "$schema" --max-budget-usd "$budget" \
         --no-session-persistence ${MODEL:+--model "$MODEL"} \
         < "$name.judge-prompt.txt" > "$name.judge.json" 2> "$name.judge.err" || echo "   judge failed, see $name.judge.err"
 
