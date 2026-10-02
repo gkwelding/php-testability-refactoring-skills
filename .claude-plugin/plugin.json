@@ -2,7 +2,7 @@
   "name": "php-testability-refactoring-skills",
   "displayName": "PHP Testability Refactoring Skills",
   "description": "Refactor Laravel, Symfony and plain-PHP code to be unit testable without changing behaviour: pin behaviour with characterisation tests, then extract hidden dependencies (facades, statics, new, clock, randomness, I/O) into injected collaborators in small, verified steps.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Black Pug Ltd"
   },
