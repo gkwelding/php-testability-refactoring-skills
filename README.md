@@ -88,17 +88,23 @@ skills/
         ├── laravel/     # facades and contracts, models/controllers/Actions
         └── symfony/     # services, autowiring, HttpClient, Messenger, test container
 scripts/build-skills.sh  # packages dist/*.skill for claude.ai
+evals/                   # with/without comparison on Laravel and Symfony fixtures (see evals/README.md)
 ```
 
 ## Status
 
 First version. The classes, methods, service IDs and config keys the rules name have been checked against the Laravel 10.50, 11.57, 12.69 and 13.34 sources, Symfony 6.4 and 8.1 (`clock`, `uid`, `http-client`, `messenger`, `dependency-injection`, `framework-bundle`), Carbon 2.73 and 3.14, `psr/clock` 1.0, and PHPUnit 10.5, 11 and 13, with the key test patterns run on PHP 8.5. Treat it as a strong starting point and adjust the rules to your house style.
 
-There's no eval yet. One could work like the one in `php-unit-tests-skills`: a set of fixture classes with known coupling (a Laravel service full of facades, a Symfony service calling `HttpClient::create()` and `Uuid::v4()`, a plain-PHP importer using `curl` and `time()`), each with a hidden characterisation suite. Each run would be scored on:
+## Evals
 
-- **Behaviour kept:** the hidden characterisation suite still passes after the refactor
-- **Testability gained:** unit tests for the extracted logic run on plain `TestCase` with no framework booted, and a mutation score on the refactored class
-- **Restraint:** diff size, new interfaces/files added, callers touched, and whether the known traps (unique jobs, UUID versions, framework HTTP defaults) were avoided
+`evals/run.sh` refactors four fixture classes (a Laravel service full of facades, a Laravel service doing `new` of collaborators and a static registry call, a Symfony service reading `$_SERVER` and `time()`, a Symfony service using a `final` I/O class) with and without the skill, and scores each run on:
+
+- **Behaviour kept:** hidden characterisation tests, copied in only after the refactor, still pass
+- **Testability gained:** blocking calls left in the target (facades, `config()`, globals, the real clock, hidden collaborators), and the agent's plain-`TestCase` unit tests passing
+- **Restraint:** public signatures unchanged, new classes and interfaces, production diff size
+- **Cost:** dollars, turns and minutes, plus an optional blind A/B review of the two diffs
+
+First result, one sample (`PaymentLinkService`, $1.47 in total): both variants kept all 8 hidden tests passing, removed all 8 blocking calls in 30 changed lines and added no new types. `with` also pinned behaviour with feature tests first, cost $0.80 against $0.47, and split the blind review 2–2. See [evals/README.md](evals/README.md) for what each score means, how to run it and what it costs.
 
 ## Licence
 
