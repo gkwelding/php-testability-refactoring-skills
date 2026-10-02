@@ -33,8 +33,8 @@ This skill takes that report as input: it changes the production code, keeps the
 ### Claude Code plugin
 
 ```
-/plugin marketplace add gkwelding/php-testability-refactoring-skills
-/plugin install php-testability-refactoring-skills@php-testability-refactoring-skills
+/plugin marketplace add gkwelding/php-unit-tests-skills
+/plugin install php-testability-refactoring-skills@blackpug
 ```
 
 The command becomes `/php-testability-refactoring-skills:refactor-for-testability <target>`.
